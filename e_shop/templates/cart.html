@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block description %}
+    welcome to Our Shop
+{% endblock %}
+{% block title %}
+    CART | SHOP
+{% endblock %}
+{% block content %}
+    <br>
+    {% if not cart_item %}
+        <div class="container">
+        <h5 class="text-center">
+            Your cart is empty. you can continue shopping
+            <a href="{% url 'shop:allProdCat' %}">click here
+            </a>
+        </h5>
+    </div>
+    {% else %}
+        <div class="container">
+            <h2 class="text-center"><b>Your Cart</b></h2>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <table>
+                        <thead>
+                        <tr class="text-center">
+                            <th colspan="5">
+                                YOUR CART ITEMS
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for i in cart_item %}
+                        <tr>
+                            <td class="text-left">
+                                <a href="{{i.product.get_url}}">
+                                    <img class="cart-img" src="{{i.product.img.url}}" alt="{{i.product.name}}">
+                                </a>
+                            </td>
+                            <td class="text-left">
+                                NAME:&nbsp;{{i.product.name}}<br>
+                                SKU:&nbsp;{{i.product.id}}<br>
+                                PRICE:&nbsp;${{i.product.price}}<br>
+                                QTY:&nbsp;{{i.quantity}}
+                            </td>
+                            <td class="text-left">
+                                Total:&nbsp;{{i.sub_total}}
+                            </td>
+                            <td>
+                                {% if i.quantity < i.product.stock %}
+                                    &nbsp;<a href="{% url 'cart:add_cart' i.product.id %}" class="custom_a icon_abcd"> <i class="fa-solid fa-plus custom_icon"></i></a>
+                                    &nbsp;&nbsp;<a href="{% url 'cart:cart_remove' i.product.id %}" class="custom_a icon_abcd" ><i class="fa-solid fa-minus custom_icon"></i></a>
+                                    &nbsp;&nbsp;<a href="{% url 'cart:cart_delete' i.product.id %}" class="custom_a icon_abcd"><i class="fa-solid fa-trash custom_icon"></i></a>
+                                {% else %}
+                                    &nbsp;<a href="{% url 'cart:cart_remove' i.product.id %}" class="custom_a icon_abcd"><i class="fa-solid fa-minus custom_icon"></i></a>
+                                    &nbsp;&nbsp;<a href="{% url 'cart:cart_delete' i.product.id %}" class="custom_a icon_abcd"><i class="fa-solid fa-trash custom_icon"></i></a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <div class="text-center">
+                        <h5>Please check your cart before confirming</h5><br>
+                        Total amount:&nbsp;{{total}}<br>
+                        Total Quantity:&nbsp;{{counter}}<br>
+                        <br>
+                        <a href="#" class="btn btn-dark">BUY</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

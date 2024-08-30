@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block description %}
+    welcome to Our Shop
+{% endblock %}
+{% block title %}
+    SEARCH RESULT| SHOP
+{% endblock %}
+{% block content %}
+    <br>
+    <div class="container">
+        <p class="text-center">You have searched for :<b>{{query}}</b></p>
+    </div>
+    <br>
+    <div class="container">
+        <div class="row">
+            {% for p in products %}
+                <div class="col-md-4">
+                    <div class="card p-3 shadow">
+                        <a href="{{p.get_url}}">
+                            <img class="product-img" src="{{p.img.url}}" alt="{{p.name}}">
+                        </a>
+                        <div class="card-body">
+                            <h3><b>{{p.name}}</b></h3>
+                            <p>{{p.price}}</p>
+                        </div>
+                    </div><br>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

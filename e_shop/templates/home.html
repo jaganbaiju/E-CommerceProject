@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block description %}
+    {% if category %}
+        {{ category.desc|truncatewords:120 }}
+    {% else %}
+        welcome to Our Shop
+    {% endif %}
+{% endblock %}
+{% block title %}
+{% if category %}
+        {{ category.name }} | SHOP
+    {% else %}
+        INDEX | SHOP
+    {% endif %}
+{% endblock %}
+{% block content %}
+    {% if category %}
+        <div class="container-fluid">
+            <h3 class="cat-head">Our Product Collects</h3>
+        </div>
+    {% endif %}
+    <div class="container-fluid">
+        {% if category %}
+            <img class="banner-img" src="{{category.img.url}}" alt="{{category.img}}">
+            <div class="container-fluid">
+                <h2 class="cat-head"><b>{{category.name}}</b></h2>
+                <p>{{category.desc}}</p>
+            </div>
+        {% else %}
+            <img  class="banner-img" src="{% static 'images/banner.png' %}" alt="BannerImg">
+            <div class="container-fluid">
+                <h2 class="cat-head">All Product Collections</h2>
+                <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters</p>
+            </div>
+        {% endif%}
+    </div>
+    <div class="container">
+        <div class="row">
+            {% for p in products %}
+                <div class="col-md-4">
+                    <div class="card p-1 shadow" style="width: 20rem;">
+                        <a href="{{p.get_url}}">
+                            <img class="product-img" src="{{p.img.url}}" alt="{{p.name}}">
+                        </a>
+                        <div class="card-body">
+                            <h3><b>{{p.name}}</b></h3>
+                            <p>{{p.price}}</p>
+                        </div>
+                    </div><br>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+<!--    PAGINATOR-->
+    <div class="mx-auto">
+        {% if products.paginator.num_pages > 1 %}
+        <hr>
+        <div class="text-center">
+            {% for pg in products.paginator.page_range %}
+            <a href="?page={{pg}}" class="btn btn-light btn-md {% if products.number == pg %} active {% endif %}">{{pg}}</a>
+            {% endfor %}
+        </div>
+        <hr>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block description %}
+    {{ products.desc|truncatewords:120 }}
+{% endblock %}
+{% block title %}
+    {{products.name}} | Shop
+{% endblock %}
+{% block content %}
+    <div class="container-fluid">
+        <h4 class="pd-head">
+            <a href="{% url 'shop:allProdCat' %}"  class="pd-head">Home</a>&nbsp;|&nbsp;<a href="{{products.category.get_url}}"  class="pd-head">{{products.category}}</a>&nbsp;|&nbsp;<span class="pd-head">{{products.name}}</span>
+        </h4>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <img class="pd-img" src="{{products.img.url}}" alt="{{products.name}}">
+            </div>
+            <div class="col-md-6">
+                <h2 class="pd-name"><b>{{products.name}}</b></h2>
+                <h4>$&nbsp;:{{products.price}}</h4>
+                <h5>PRODUCT DESCRIPTION</h5>
+                <p>{{products.desc}}</p>
+                {% if products.stock <= 0 %}
+                    <p>OUT OF STOCK</p>
+                {% else %}
+                    <a href="{% url 'cart:add_cart' products.id %}" class="btn btn-secondary">Add to Cart</a>
+                {% endif %}
+            </div>
+        </div><br>
+    </div>
+{% endblock %}
